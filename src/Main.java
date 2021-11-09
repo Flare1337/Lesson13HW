@@ -1,10 +1,7 @@
 package com.company.src;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class Main {
 
@@ -19,13 +16,13 @@ public class Main {
         Message message7 = new Message("Huh, bye...", "John", 857342345);
         Message message8 = new Message("Huh, bye...", "John", 857342345);
 
-        CallLog log = new CallLog(Instant.now(),857342345, true);
+        CallLog log = new CallLog(Instant.now(), 857342345, true);
         CallLog log2 = new CallLog(Instant.now(), 857342346, true);
-        CallLog log3 = new CallLog(Instant.now(),857342344, false);
-        CallLog log4 = new CallLog(Instant.now(), 857342346, false);
+        CallLog log3 = new CallLog(Instant.now(), 857342344, false);
+        CallLog log4 = new CallLog(Instant.now(), 857342347, false);
         CallLog log5 = new CallLog(Instant.now(), 857342345, true);
         CallLog log6 = new CallLog(Instant.now(), 857342346, false);
-        CallLog log7 = new CallLog(Instant.now(), 857342346, false);
+        CallLog log7 = new CallLog(Instant.now(), 857342347, false);
         CallLog log8 = new CallLog(Instant.now(), 857342346, false);
 
 
@@ -76,26 +73,87 @@ public class Main {
 
         Main.iterativeCollectionFinder(foundNumbers, foundStrings, foundDates);
 
-        System.out.println("\n Следующее, 4 задание");
+        System.out.println("\n 4 задание");
         HashSet<Message> uniqueMessages = new HashSet<>(messages);
         HashSet<CallLog> uniqueСallogs = new HashSet<>(logs);
         HashSet<Contact> uniqueContacts = new HashSet<>(contacts);
 
         System.out.println("Просто вывод всех объектов");
-        Main.iterativeCollectionFinder(contacts, messages, uniqueСallogs);
+        iterativeCollectionFinder(contacts, messages, uniqueСallogs);
         System.out.println("\n Уникальные объекты \n");
-        Main.iterativeCollectionFinder(uniqueContacts, uniqueMessages , uniqueСallogs);
+        iterativeCollectionFinder(uniqueContacts, uniqueMessages, uniqueСallogs);
         // Или проверить есть ли в методе дубликаты с помощью метода который написал в аудитории, пример
         // А может и к лучшему что не пришлось так решать
         // System.out.println("Имеет дубликаты? " + Main.isCallLogCollectionHasDuplicates(logs));
         // System.out.println("Имеет дубликаты? x2 " + Main.isCallLogCollectionHasDuplicates(uniqueСallogs));
+        System.out.println("\n 5 задание");
+        Map<Contact, ArrayList<Message>> contactMessagesMap = groupMessagesByContact(contacts, messages);
+        displayContentsOfMap(contactMessagesMap);
+
+        System.out.println("\n 6 задание");
+        Map<Contact, ArrayList<CallLog>> contactCallsMap = groupCallsByContact(contacts, logs);
+        displayContentsOfMap2(contactCallsMap);
     }
+
     public static void iterativeCollectionFinder(Collection<Contact> contactCollection,
                                                  Collection<Message> messageCollection,
                                                  Collection<CallLog> callLogCollection) {
         callLogCollection.forEach(callLog -> System.out.println("callLog = " + callLog.getDate().toString()));
         contactCollection.forEach(contact -> System.out.println("contact = " + contact.getNumber()));
         messageCollection.forEach(message -> System.out.println("message = " + message.getMessage()));
+    }
+
+    public static Map<Contact, ArrayList<CallLog>> groupCallsByContact(List<Contact> contacts, List<CallLog> callLogs) {
+        Map<Contact, ArrayList<CallLog>> contactMessagesMap = new HashMap<>();
+        for (Contact contact : contacts) {
+            contactMessagesMap.put(contact, new ArrayList<>());
+            for (CallLog callLog : callLogs) {
+                if (contact.getNumber() == callLog.getPhoneNumber()) {
+                    contactMessagesMap.get(contact).add(callLog);
+                }
+            }
+        }
+        return contactMessagesMap;
+    }
+
+    public static Map<Contact, ArrayList<Message>> groupMessagesByContact(List<Contact> contacts, List<Message> messages) {
+        Map<Contact, ArrayList<Message>> contactMessagesMap = new HashMap<>();
+        for (Contact contact : contacts) {
+            contactMessagesMap.put(contact, new ArrayList<>());
+            for (Message message : messages) {
+                if (contact.getNumber() == message.getPhoneNumber()) {
+                    contactMessagesMap.get(contact).add(message);
+                }
+            }
+        }
+        return contactMessagesMap;
+    }
+
+    public static void displayContentsOfMap2(Map <Contact, ArrayList<CallLog>> groupedCallLogs){
+        for (var contact : groupedCallLogs.keySet()) {
+            System.out.println("Contact name: " + contact.getCompanyName() + "\n" +
+                    "Phone number: " + contact.getPhoneNumber());
+            for (CallLog callLog : groupedCallLogs.get(contact)) {
+                System.out.println("Phone number of a call: " + callLog.getPhoneNumber() + "\n" +
+                        "Is successful call: " + callLog.isSuccessfulCall() + "\n" +
+                        "Call date: " + callLog.getDate());
+            }
+            System.out.println("\n Next contact\n");
+        }
+        System.out.println("\n End of the list");
+    }
+
+    public static void displayContentsOfMap(Map <Contact, ArrayList<Message>> groupedMessages){
+        for (var contact : groupedMessages.keySet()) {
+            System.out.println("Contact name: " + contact.getCompanyName() + "\n" +
+                                "Phone number: " + contact.getPhoneNumber());
+            for (Message message : groupedMessages.get(contact)) {
+                System.out.println("Phone number from which was sent the message: " + message.getPhoneNumber() + "\n" +
+                         "Message related to the contact: " + message.getMessage());
+            }
+            System.out.println("\n Next contact\n");
+        }
+        System.out.println("\n End of the list");
     }
 
     public static boolean isCallLogCollectionHasDuplicates(Collection<CallLog> collection) {

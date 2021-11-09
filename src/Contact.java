@@ -22,6 +22,22 @@ public class Contact {
         this.phoneNumber = phoneNumber;
     }
 
+    public long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     public static Collection<Contact> findContact(Collection<Contact> contactCollection, String number) {
         Collection<Contact> contacts = new ArrayList<>();
         for (Contact contact : contactCollection) {

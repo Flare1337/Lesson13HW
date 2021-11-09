@@ -24,6 +24,22 @@ public class CallLog {
         this.date = date;
     }
 
+    public long getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(long phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isSuccessfulCall() {
+        return isSuccessfulCall;
+    }
+
+    public void setSuccessfulCall(boolean successfulCall) {
+        isSuccessfulCall = successfulCall;
+    }
+
     public static Collection<CallLog> findDate(Collection<CallLog> dateCollection, String inputDate) {
         Collection<CallLog> callLogs = new ArrayList<>();
         for (CallLog log : dateCollection) {
