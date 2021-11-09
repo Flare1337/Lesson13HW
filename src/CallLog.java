@@ -3,14 +3,17 @@ package com.company.src;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 public class CallLog {
     private Instant date;
-    private Exception exception;
+    private long phoneNumber;
+    private boolean isSuccessfulCall;
 
-    public CallLog(Instant date, Exception exception) {
+    public CallLog(Instant date, long phoneNumber, boolean isSuccessfulCall) {
         this.date = date;
-        this.exception = exception;
+        this.phoneNumber = phoneNumber;
+        this.isSuccessfulCall = isSuccessfulCall;
     }
 
     public Instant getDate() {
@@ -29,5 +32,24 @@ public class CallLog {
             }
         }
         return callLogs;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        CallLog callLog = (CallLog) o;
+        return phoneNumber == callLog.phoneNumber &&
+                isSuccessfulCall == callLog.isSuccessfulCall &&
+                date.equals(callLog.date);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, phoneNumber);
     }
 }

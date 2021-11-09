@@ -2,14 +2,17 @@ package com.company.src;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 public class Message {
     private String message;
     private String name;
+    private long phoneNumber;
 
-    public Message(String message, String name) {
+    public Message(String message, String name, long phoneNumber) {
         this.message = message;
         this.name = name;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getName() {
@@ -36,5 +39,24 @@ public class Message {
             }
         }
         return messages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Message message1 = (Message) o;
+        return phoneNumber == message1.phoneNumber &&
+                message.equals(message1.message) &&
+                name.equals(message1.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(message, name, phoneNumber);
     }
 }
